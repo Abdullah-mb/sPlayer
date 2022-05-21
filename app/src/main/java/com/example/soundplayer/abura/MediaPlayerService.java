@@ -11,11 +11,11 @@ import android.os.IBinder;
 
 import androidx.annotation.RequiresApi;
 
-public class BackgroundService extends Service {
+public class MediaPlayerService extends Service {
 
     MediaPlayer player;
 
-    public BackgroundService(){
+    public MediaPlayerService(){
 
     }
 

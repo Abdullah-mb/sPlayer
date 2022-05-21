@@ -1,16 +1,13 @@
 package com.example.soundplayer.abura;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -46,14 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void play(){
-        Intent intent = new Intent(getBaseContext(),BackgroundService.class);
+        Intent intent = new Intent(getBaseContext(), MediaPlayerService.class);
 //        intent.putExtra("songName",R.raw.azan);
         startForegroundService(intent);
 
     }
 
     public void stop(){
-            Intent intent = new Intent(getBaseContext(),BackgroundService.class);
+            Intent intent = new Intent(getBaseContext(),MediaPlayerService.class);
             stopService(intent);
         }
     }
