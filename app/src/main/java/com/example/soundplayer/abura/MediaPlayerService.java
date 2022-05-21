@@ -32,7 +32,7 @@ public class MediaPlayerService extends Service {
 //        string songName = getIntent().getStringExtra("songName");
         startForeground(122, getNotificationDetails());
         if(player == null){
-            player = MediaPlayer.create(this,R.raw.azan);
+            player = MediaPlayer.create(this,R.raw.abdulbaset);
 
         }
         player.start();
