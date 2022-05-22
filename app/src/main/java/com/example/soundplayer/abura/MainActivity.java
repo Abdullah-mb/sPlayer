@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button playBtn,stopBtn;
     ListView azanListView;
-    List azanList;
+    List<String> azanList;
+    String track;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button stopBtn = (Button) findViewById(R.id.stop);
         ListView azanListView = (ListView) findViewById(R.id.ListView);
 
-        azanList = new ArrayList<>();
+        azanList = new ArrayList<String>();
         addToList();
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,azanList);
@@ -43,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         azanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                String item = (String) arrayAdapter.getItem(position);
-                selectTrack(item);
+                track = (String) azanList.get(position);
             }
         } );
 
@@ -54,9 +54,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void selectTrack(String item) {
-//        MediaPlayerService.class.selectTrack
-    }
+//    private void selectTrack(String item) {
+//        Intent i=new Intent(this,MediaPlayerService.class);
+//        i.putExtra("SONG_KEY",item);
+////        MediaPlayerService.class.selectTrack
+//    }
 
     private void addToList() {
         Field[] fields=R.raw.class.getFields();
@@ -83,13 +85,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void play(){
         Intent intent = new Intent(getBaseContext(), MediaPlayerService.class);
-//        intent.putExtra("songName",R.raw.azan);
+        intent.putExtra("TRACK_KEY",track);
         startForegroundService(intent);
 
     }
 
     public void stop(){
-            Intent intent = new Intent(getBaseContext(),MediaPlayerService.class);
-            stopService(intent);
+        Intent intent = new Intent(getBaseContext(),MediaPlayerService.class);
+        stopService(intent);
         }
     }

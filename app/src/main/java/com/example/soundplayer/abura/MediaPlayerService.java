@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+
+import java.io.IOException;
 
 public class MediaPlayerService extends Service {
 
@@ -26,16 +29,22 @@ public class MediaPlayerService extends Service {
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        string songName = getIntent().getStringExtra("songName");
+        String trackName = intent.getStringExtra("TRACK_KEY");
         startForeground(122, getNotificationDetails());
         if(player == null){
-            player = MediaPlayer.create(this,R.raw.abdulbaset);
-
+            try {
+                Toast.makeText(getBaseContext(),"hallo "+trackName,Toast.LENGTH_LONG).show();
+                player.setDataSource(trackName);
+                player.prepare();
+                player.start();
+            } catch (IOException e) {
+                Toast.makeText(getBaseContext(), "Cannot Play Track!", Toast.LENGTH_SHORT).show();
+            }
         }
-        player.start();
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
