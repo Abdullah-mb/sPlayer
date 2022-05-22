@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MediaPlayerService extends Service {
 
     MediaPlayer player;
@@ -25,26 +26,23 @@ public class MediaPlayerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+
         return null;
     }
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         String trackName = intent.getStringExtra("TRACK_KEY");
-        startForeground(122, getNotificationDetails());
+        int track = getResources().getIdentifier(trackName,"raw",getPackageName());
+
         if(player == null){
-            try {
-                Toast.makeText(getBaseContext(),"hallo "+trackName,Toast.LENGTH_LONG).show();
-                player.setDataSource(trackName);
-                player.prepare();
-                player.start();
-            } catch (IOException e) {
-                Toast.makeText(getBaseContext(), "Cannot Play Track!", Toast.LENGTH_SHORT).show();
-            }
+            player = MediaPlayer.create(getBaseContext(),track);
         }
+        player.start();
+
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -52,21 +50,12 @@ public class MediaPlayerService extends Service {
 //                stopForeground(true);
             }
         });
+
+        startForeground(122, getNotificationDetails());
         return START_STICKY;
     }
 
 
-    @Override
-    public void onDestroy() {
-        if(player != null) {
-            player.release();
-            player = null;
-        }
-        stopSelf();
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Notification getNotificationDetails(){
 
         String channelID = "media playerID";
@@ -82,6 +71,16 @@ public class MediaPlayerService extends Service {
                 .setSmallIcon(R.drawable.ic_launcher_background);
 
         return azanNotification.build();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        if(player != null) {
+            player.release();
+            player = null;
+        }
+        stopSelf();
     }
 
 }

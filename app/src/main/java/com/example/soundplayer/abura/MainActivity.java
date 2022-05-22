@@ -18,12 +18,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button playBtn,stopBtn;
+    Button playBtn,stopBtn;
     ListView azanListView;
+
     List<String> azanList;
     String track;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-//    private void selectTrack(String item) {
-//        Intent i=new Intent(this,MediaPlayerService.class);
-//        i.putExtra("SONG_KEY",item);
-////        MediaPlayerService.class.selectTrack
-//    }
 
     private void addToList() {
         Field[] fields=R.raw.class.getFields();
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -77,18 +75,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.stop:
                 stop();
                 break;
-
         }
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void play(){
         Intent intent = new Intent(getBaseContext(), MediaPlayerService.class);
         intent.putExtra("TRACK_KEY",track);
         startForegroundService(intent);
-
     }
+
 
     public void stop(){
         Intent intent = new Intent(getBaseContext(),MediaPlayerService.class);
