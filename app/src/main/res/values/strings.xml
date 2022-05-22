@@ -3,4 +3,5 @@
     <string name="welcoming_msg">Welcome to Azan \nsound player !!</string>
     <string name="playBtn">Play</string>
     <string name="stopBtn">Stop</string>
+
 </resources>
